@@ -1,118 +1,133 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
+import {getCredentials, saveCredentials} from './src/utils/keychain';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
   View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const LoginScreen = () => {
+  const [username, setUsername] = useState('user123');
+  const [password, setPassword] = useState('password123');
+  const [isLoading, setIsLoading] = useState(false);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  const handleLogin = async () => {
+    if (!username || !password) {
+      Alert.alert('Error', 'Username dan Password tidak boleh kosong');
+      return;
+    }
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+    setIsLoading(true);
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+    try {
+      // Simulasi proses login
+      const isAuthenticated =
+        username === 'user123' && password === 'password123';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+      if (isAuthenticated) {
+        // Simpan kredensial di Keychain
+        await saveCredentials(username, password);
+        Alert.alert('Sukses', 'Login berhasil!');
+      } else {
+        Alert.alert('Error', 'Username atau Password salah');
+      }
+    } catch (error) {
+      console.error('Error saat menyimpan kredensial:', error);
+      Alert.alert('Error', 'Terjadi kesalahan, coba lagi nanti');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleRetrieveCredentials = async () => {
+    try {
+      const credentials = await getCredentials();
+      if (credentials) {
+        Alert.alert('Info', `Username: ${credentials.username}`);
+      } else {
+        Alert.alert('Info', 'Tidak ada kredensial yang tersimpan');
+      }
+    } catch (error) {
+      console.error('Error saat mengambil kredensial:', error);
+      Alert.alert('Error', 'Terjadi kesalahan saat mengambil kredensial');
+    }
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={username}
+        onChangeText={setUsername}
+        autoCapitalize="none"
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+      <TextInput
+        style={styles.input}
+        placeholder="Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        contextMenuHidden
+        selectTextOnFocus={false}
+      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleLogin}
+        disabled={isLoading}>
+        <Text style={styles.buttonText}>
+          {isLoading ? 'Loading...' : 'Login'}
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.link} onPress={handleRetrieveCredentials}>
+        <Text style={styles.linkText}>Ambil Kredensial Tersimpan</Text>
+      </TouchableOpacity>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
   },
-  sectionTitle: {
+  title: {
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
+    marginBottom: 24,
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
+  input: {
+    width: '100%',
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    marginBottom: 16,
   },
-  highlight: {
-    fontWeight: '700',
+  button: {
+    backgroundColor: '#007bff',
+    padding: 12,
+    borderRadius: 8,
+    width: '100%',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  link: {
+    marginTop: 16,
+  },
+  linkText: {
+    color: '#007bff',
+    textDecorationLine: 'underline',
   },
 });
 
-export default App;
+export default LoginScreen;

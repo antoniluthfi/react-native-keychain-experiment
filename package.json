@@ -7,11 +7,21 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "clean-android": "cd android && gradlew clean"
   },
   "dependencies": {
+    "@react-native-clipboard/clipboard": "^1.15.0",
     "react": "18.3.1",
-    "react-native": "0.76.5"
+    "react-native": "0.76.5",
+    "react-native-keychain": "^9.2.2",
+    "@react-native-firebase/analytics": "^18.4.0",
+    "@react-native-firebase/app": "^18.4.0",
+    "@react-native-firebase/app-distribution": "^18.4.0",
+    "@react-native-firebase/crashlytics": "^18.4.0",
+    "@react-native-firebase/dynamic-links": "^18.4.0",
+    "@react-native-firebase/messaging": "^18.4.0",
+    "@react-native-firebase/perf": "^18.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
