@@ -1,4 +1,4 @@
-package com.jodgigexperiment2;
+package com.jodgigexperiment;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;

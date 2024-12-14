@@ -1,4 +1,4 @@
-package com.jodgigexperiment2;
+package com.jodgigexperiment;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

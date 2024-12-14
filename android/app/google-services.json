@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "595448571301",
+    "project_id": "jodgigexperiment",
+    "storage_bucket": "jodgigexperiment.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595448571301:android:70d210574ce6ebfa81f44c",
+        "android_client_info": {
+          "package_name": "com.jodgigexperiment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTnGAbmghYO8HakTFtrSXTAoDSZ687UQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
